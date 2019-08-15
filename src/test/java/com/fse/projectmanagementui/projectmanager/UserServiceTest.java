@@ -1,20 +1,37 @@
 package com.fse.projectmanagementui.projectmanager;
 
+import static org.junit.Assert.assertEquals;
+
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mockito;
+import org.mockito.Spy;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import com.fse.projectmanager.accessor.UserAccessor;
+import com.fse.projectmanager.accessor.UserRepository;
 import com.fse.projectmanager.entity.User;
 import com.fse.projectmanager.service.UserRestService;
 
-import static org.junit.Assert.*;
-
-import java.util.List;
-
+@RunWith(MockitoJUnitRunner.class)
 public class UserServiceTest {
 	
-	//private UserRestService userService = new UserRestService();
+	@InjectMocks
+	private UserRestService userService;
+	
+	@Spy
+	private UserAccessor userAccessor;
+	
+	@Spy
+	private UserRepository userRepository;
+	
 	@Autowired
     private RestTemplate restTemplate = new RestTemplate();
 	
@@ -75,8 +92,49 @@ public class UserServiceTest {
 	public void testGetAllUsers() {
 		
 		ResponseEntity<String> response = restTemplate.getForEntity(url + "/", String.class);
-		System.out.println(response);
 		assertEquals(true, response.getBody().contains("\"userId\":1"));
+	}
+	
+	/*@Test
+	public void testGetUserById1() {
+		User user = new User();
+		user.setUserId(1);
+		
+		Mockito.when(userRepository.findById(1).get()).thenReturn(user);
+		Mockito.when(userAccessor.getUser(1)).thenReturn(user);
+		user = userService.findUser(1);
+		
+		assertEquals(new Integer(1), user.getUserId());
+	}*/
+	
+	@Test
+	public void testGetAllUsers1() {
+		User user = new User();
+		user.setUserId(1);
+		List<User> list = Arrays.asList(user);
+		
+		Mockito.when(userRepository.findAll()).thenReturn(list);
+		Mockito.when(userAccessor.getUsers()).thenReturn(list);
+		list = userService.findUsers();
+		
+		assertEquals(true, list.size() > 0);
+	}
+	
+	@Test
+	public void testAddUser1() {
+		User user = new User();
+		user.setUserId(1);
+		user.setFirstName("Test");
+		user.setLastName("User");
+		user.setEmployeeId("999");
+		user.setProjectId(1);
+		user.setTaskId(1);
+		
+		Mockito.when(userRepository.save(user)).thenReturn(user);
+		Mockito.when(userAccessor.saveUser(user)).thenReturn(true);
+		ResponseEntity<String> response = userService.addUser(user);
+		
+		assertEquals(true, response.getBody().contains("true"));
 	}
 
 }
