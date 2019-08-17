@@ -1,9 +1,8 @@
-package com.fse.projectmanagementui.projectmanager;
+package com.fse.projectmanager;
 
 import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -38,7 +37,7 @@ public class ProjectServiceTest {
 		project.setProjectId(1);
 		List<Project> list = Arrays.asList(project);
 		
-		Mockito.when(projectRepository.findAll()).thenReturn(list);
+		//Mockito.when(projectRepository.findAll()).thenReturn(list);
 		Mockito.when(projectAccessor.getProject()).thenReturn(list);
 		list = projectRestService.findProjects();
 		
@@ -58,7 +57,7 @@ public class ProjectServiceTest {
 		project.setEndDate(today);
 		project.setPriority(30);
 		
-		Mockito.when(projectRepository.save(project)).thenReturn(project);
+		//Mockito.when(projectRepository.save(project)).thenReturn(project);
 		Mockito.when(projectAccessor.saveProject(project)).thenReturn(true);
 		ResponseEntity<String> response = projectRestService.addProject(project);
 		
@@ -69,11 +68,29 @@ public class ProjectServiceTest {
 	public void testGetProjectById() {
 		Project project = new Project();
 		project.setProjectId(1);
+		project.setProject("test");
+		project.setStartDate(new Date());
+		project.setEndDate(new Date());
+		project.setPriority(30);
 		
-		Mockito.when(projectRepository.findById(1).get()).thenReturn(project);
+		//Mockito.when(projectRepository.findById(1).get()).thenReturn(project);
 		Mockito.when(projectAccessor.getProject(1)).thenReturn(project);
 		project = projectRestService.findProject(1);
+		int projectId = project.getProjectId();
+		String projectDesc = project.getProject();
+		Date startDate = project.getStartDate();
+		Date endDate = project.getEndDate();
+		int priority = project.getPriority();
+		
 		
 		assertEquals(true, null != project);
+	}
+	
+	@Test
+	public void testDeleteProject() {
+		Mockito.when(projectAccessor.deleteProject(1)).thenReturn(true);
+		ResponseEntity<String> response = projectRestService.deleteProject(1);
+		
+		assertEquals(true, response.getBody().contains("true"));
 	}
 }

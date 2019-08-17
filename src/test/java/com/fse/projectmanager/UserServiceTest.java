@@ -1,4 +1,4 @@
-package com.fse.projectmanagementui.projectmanager;
+package com.fse.projectmanager;
 
 import static org.junit.Assert.assertEquals;
 
@@ -17,6 +17,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fse.projectmanager.accessor.UserAccessor;
 import com.fse.projectmanager.accessor.UserRepository;
+import com.fse.projectmanager.entity.Task;
 import com.fse.projectmanager.entity.User;
 import com.fse.projectmanager.service.UserRestService;
 
@@ -113,7 +114,7 @@ public class UserServiceTest {
 		user.setUserId(1);
 		List<User> list = Arrays.asList(user);
 		
-		Mockito.when(userRepository.findAll()).thenReturn(list);
+		//Mockito.when(userRepository.findAll()).thenReturn(list);
 		Mockito.when(userAccessor.getUsers()).thenReturn(list);
 		list = userService.findUsers();
 		
@@ -130,11 +131,31 @@ public class UserServiceTest {
 		user.setProjectId(1);
 		user.setTaskId(1);
 		
-		Mockito.when(userRepository.save(user)).thenReturn(user);
+		//Mockito.when(userRepository.save(user)).thenReturn(user);
 		Mockito.when(userAccessor.saveUser(user)).thenReturn(true);
 		ResponseEntity<String> response = userService.addUser(user);
 		
 		assertEquals(true, response.getBody().contains("true"));
+	}
+	
+	@Test
+	public void testDeleteUser1() {
+		//Mockito.when(userRepository.save(user)).thenReturn(user);
+		Mockito.when(userAccessor.deleteUser(1)).thenReturn(true);
+		ResponseEntity<String> response = userService.deleteUser(1);
+		
+		assertEquals(true, response.getBody().contains("true"));
+	}
+	
+	@Test
+	public void testGetUserById1() {
+		User user = new User();
+		user.setUserId(1);
+		
+		Mockito.when(userAccessor.getUser(1)).thenReturn(user);
+		user = userService.findUser(1);
+		
+		assertEquals(true, null != user);
 	}
 
 }

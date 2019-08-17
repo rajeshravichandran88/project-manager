@@ -1,4 +1,4 @@
-package com.fse.projectmanagementui.projectmanager;
+package com.fse.projectmanager;
 
 import static org.junit.Assert.*;
 
