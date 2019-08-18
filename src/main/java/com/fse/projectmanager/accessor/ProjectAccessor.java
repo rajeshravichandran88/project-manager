@@ -19,10 +19,21 @@ public class ProjectAccessor {
 	@Autowired
 	private ProjectRepository projectRepository;
 	
+	@Autowired
+	private TaskRepository taskRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
+	
 	public List<Project> getProject() {
 		List<Project> projectList = null;
 		try {
 			projectList = projectRepository.findAll();
+			for(Project project: projectList) {
+				project.setTasks(taskRepository.findAllByProjectId(project.getProjectId()));
+				project.setUser(userRepository.findUserByProjectId(project.getProjectId()));
+			}
+			
 		} catch(NoSuchElementException e) {
 			return new ArrayList<Project>();
 		} catch (Exception e) {
