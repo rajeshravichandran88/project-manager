@@ -42,7 +42,7 @@ public class UserRestService {
 	}
 	
 	@RequestMapping(value = "/delete/{userId}", method = RequestMethod.POST,
-			consumes = "application/json", produces = "application/json")
+			 produces = "application/json")
 	public @ResponseBody ResponseEntity<String> deleteUser(@PathVariable("userId") Integer userId) {
 		boolean status = userAccessor.deleteUser(userId);
 		return new ResponseEntity<String>("{\"status\": "+ status +"}", HttpStatus.OK);
