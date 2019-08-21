@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.fse.projectmanager.entity.ParentTask;
 import com.fse.projectmanager.entity.Task;
 
 @Component("taskAccessor")
@@ -19,10 +20,20 @@ public class TaskAccessor {
 	@Autowired
 	private TaskRepository taskRepository;
 	
+	@Autowired
+	private ParentTaskRepository parentTaskRepository;
+	
 	public List<Task> getTasks() {
 		List<Task> taskList = null;
 		try {
 			taskList = taskRepository.findAll();
+			for(Task task: taskList) {
+				ParentTask parentTask = null;
+				if(null != task.getParentId()) {
+					parentTask = parentTaskRepository.findById(task.getParentId()).get();
+				}
+				task.setParentTask(parentTask);
+			}
 		} catch(NoSuchElementException e) {
 			return new ArrayList<Task>();
 		} catch (Exception e) {

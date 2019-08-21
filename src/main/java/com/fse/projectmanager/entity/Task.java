@@ -1,5 +1,6 @@
 package com.fse.projectmanager.entity;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -8,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "task")
@@ -38,6 +40,15 @@ public class Task {
 	
 	@Column(name = "status")
 	private String status;
+	
+	@Transient
+	private String formattedStartDate;
+	
+	@Transient
+	private String formattedEndDate;
+	
+	@Transient
+	private ParentTask parentTask;
 
 	public Integer getTaskId() {
 		return taskId;
@@ -101,6 +112,34 @@ public class Task {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getFormattedStartDate() {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		return dateFormat.format(startDate);
+	}
+
+	public void setFormattedStartDate(String formattedStartDate) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		this.formattedStartDate = dateFormat.format(startDate);
+	}
+
+	public String getFormattedEndDate() {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		return dateFormat.format(endDate);
+	}
+
+	public void setFormattedEndDate(String formattedEndDate) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		this.formattedEndDate = dateFormat.format(endDate);
+	}
+
+	public ParentTask getParentTask() {
+		return parentTask;
+	}
+
+	public void setParentTask(ParentTask parentTask) {
+		this.parentTask = parentTask;
 	}
 	
 }
