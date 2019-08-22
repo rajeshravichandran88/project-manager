@@ -81,6 +81,10 @@ public class ProjectServiceTest {
 		Date startDate = project.getStartDate();
 		Date endDate = project.getEndDate();
 		int priority = project.getPriority();
+		project.getFormattedEndDate();
+		project.getFormattedStartDate();
+		project.getTasks();
+		project.getUser();
 		
 		
 		assertEquals(true, null != project);

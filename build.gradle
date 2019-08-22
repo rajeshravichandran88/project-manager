@@ -4,6 +4,10 @@ plugins {
 	id 'java'
 }
 
+apply plugin: 'java'
+apply plugin: 'jacoco'
+apply plugin: 'eclipse'
+
 group = 'com.fse.projectmanager'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
@@ -17,4 +21,15 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.1.7.RELEASE'
 	compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.6'
+}
+
+task fatJar(type: Jar) {
+	manifest {
+        attributes 'Implementation-Title': 'project-manager',  
+        	'Implementation-Version': version,
+        	'Main-Class': 'com.fse.projectmanager.ProjectManagerApplication'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
 }

@@ -84,16 +84,16 @@ public class UserServiceTest {
 	@Test
 	public void testGetUserById() {
 		
-		ResponseEntity<User> response = restTemplate.getForEntity(url + "/1", User.class);
+		ResponseEntity<User> response = restTemplate.getForEntity(url + "/68", User.class);
 		
-		assertEquals(new Integer(1), response.getBody().getUserId());
+		assertEquals(new Integer(68), response.getBody().getUserId());
 	}
 	
 	@Test
 	public void testGetAllUsers() {
 		
 		ResponseEntity<String> response = restTemplate.getForEntity(url + "/", String.class);
-		assertEquals(true, response.getBody().contains("\"userId\":1"));
+		assertEquals(true, response.getBody().contains("userId"));
 	}
 	
 	/*@Test
